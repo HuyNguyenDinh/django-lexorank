@@ -72,7 +72,7 @@ from django.db import models
 class Task(RankedModel):
     name = models.CharField(max_length=255)
     board = models.ForeignKey("Board", on_delete=models.CASCADE, related_name="tasks")
-    order_with_respect_to = "board"
+    order_with_respect_to = ["board"]
 ```
 
 ### Field parameters
@@ -147,10 +147,3 @@ or for a group if `order_with_respect_to` is set
 
 `model.get_last_object_rank()` - return last object rank in the list
 
-
-### Rebalancing Schedule
-
-Each time, a rank length exceeds the limit, rebalancing is scheduled for the whole list or a group,
-according to the value of `order_with_respect_to` parameter.
-
-`SheduledRebalancing` model can be used to create a task for rebalancing ranks.
