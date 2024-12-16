@@ -209,7 +209,7 @@ class RankedModel(models.Model):
 
         return self
 
-    @admin.display(boolean=True)
+    # @admin.display(boolean=True)
     def rebalancing_required(self) -> bool:
         """
         Return `True` if any object has rank length greater than 128, `False` otherwise.
@@ -219,7 +219,7 @@ class RankedModel(models.Model):
             **self._with_respect_to_kwargs
         ).exists()
 
-    @admin.display(boolean=True)
+    # @admin.display(boolean=True)
     def rebalancing_scheduled(self) -> bool:
         """
         Return `True` if rebalancing was scheduled for a list that includes that object,
