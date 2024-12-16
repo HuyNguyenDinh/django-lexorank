@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Optional, Type
+from typing import Optional, Type, List
 
 from django.contrib import admin
 from django.db import models, transaction
@@ -23,7 +23,7 @@ class RankedModel(models.Model):
     objects = RankedModelManager()
 
     rank = RankField()
-    order_with_respect_to: Optional[str] = None
+    order_with_respect_to: Optional[List[str]] = None
 
     class Meta:
         abstract = True
@@ -66,15 +66,18 @@ class RankedModel(models.Model):
     def _with_respect_to_kwargs(self) -> dict:
         if not self.order_with_respect_to:
             return {}
+        result = {}
+        # return {self.order_with_respect_to: getattr(self, self.order_with_respect_to)}
+        for field in self.order_with_respect_to:
+            result.update({field: getattr(self, field)})
+        return result
 
-        return {self.order_with_respect_to: getattr(self, self.order_with_respect_to)}
+    # @property
+    # def _with_respect_to_value(self) -> str:
+    #     if self.order_with_respect_to:
+    #         return getattr(self, self.order_with_respect_to).pk
 
-    @property
-    def _with_respect_to_value(self) -> str:
-        if self.order_with_respect_to:
-            return getattr(self, self.order_with_respect_to).pk
-
-        return ""
+    #     return ""
 
     @property
     def _objects_count(self):
@@ -220,15 +223,15 @@ class RankedModel(models.Model):
         ).exists()
 
     # @admin.display(boolean=True)
-    def rebalancing_scheduled(self) -> bool:
-        """
-        Return `True` if rebalancing was scheduled for a list that includes that object,
-        `False` otherwise.
-        """
-        return ScheduledRebalancing.objects.filter(
-            model=self._meta.model_name,
-            with_respect_to=self._with_respect_to_value,
-        ).exists()
+    # def rebalancing_scheduled(self) -> bool:
+    #     """
+    #     Return `True` if rebalancing was scheduled for a list that includes that object,
+    #     `False` otherwise.
+    #     """
+    #     return ScheduledRebalancing.objects.filter(
+    #         model=self._meta.model_name,
+    #         with_respect_to=self._with_respect_to_value,
+    #     ).exists()
 
     @classmethod
     def get_first_object(cls, with_respect_to_kwargs: dict) -> Optional["RankedModel"]:
@@ -266,8 +269,8 @@ class RankedModel(models.Model):
         last_object = cls.get_last_object(with_respect_to_kwargs=with_respect_to_kwargs)
         return last_object.rank if last_object else None
 
-    def schedule_rebalancing(self):
-        ScheduledRebalancing.objects.update_or_create(
-            model=self._meta.model_name,
-            with_respect_to=self._with_respect_to_value,
-        )
+    # def schedule_rebalancing(self):
+    #     ScheduledRebalancing.objects.update_or_create(
+    #         model=self._meta.model_name,
+    #         with_respect_to=self._with_respect_to_value,
+    #     )

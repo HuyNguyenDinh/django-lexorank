@@ -9,15 +9,17 @@ class RankedModelQuerySet(models.QuerySet):
 
 class RankedModelManager(models.Manager.from_queryset(RankedModelQuerySet)):  # type: ignore[misc] # noqa: E501
     def _add(self, ordering: str, **kwargs):
+        with_respect_to_kwargs = {}
         if self.model.order_with_respect_to:
-            with_respect_to_kwargs = {
-                self.model.order_with_respect_to: kwargs[
-                    self.model.order_with_respect_to
-                ]
-            }
-        else:
-            with_respect_to_kwargs = {}
-
+            # with_respect_to_kwargs = {
+            #     self.model.order_with_respect_to: kwargs[
+            #         self.model.order_with_respect_to
+            #     ]
+            # }
+            for field in self.model.order_with_respect_to:
+                with_respect_to_kwargs.update({
+                    field: kwargs[field]
+                })
         qs = self.filter(**with_respect_to_kwargs).order_by(f"{ordering}rank")
 
         objects_count = qs.count()
