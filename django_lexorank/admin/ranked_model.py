@@ -4,7 +4,7 @@ from django.contrib import admin
 class RankedModelAdmin(admin.ModelAdmin):
     actions = ["rebalance_ranks"]
 
-    @admin.action(description="Rebalance ranks")
+    # @admin.action(description="Rebalance ranks")
     def rebalance_ranks(modeladmin, request, queryset):
         model = queryset.first().model
 
