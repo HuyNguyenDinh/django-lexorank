@@ -20,8 +20,8 @@ readme = "README.md"
 "Bug Tracker" = "https://github.com/rozumdev/django-lexorank/issues/"
 
 [tool.poetry.dependencies]
-python = "^3.6"
-django = ">=3.1"
+python = "^3.8"
+django = ">=3.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest-django = "^4.5.2"
@@ -49,12 +49,11 @@ testpaths = "tests"
 [tool.tox]
 legacy_tox_ini = """
     [tox]
-    envlist = django{3.1,4.2}-{py36,py37,py38,py39,py310,py311,py312}
+    envlist = django{3.2,4.2}-{py38,py39,py310,py311,py312}
               django5.0-{py310,py311,py312}
 
     [gh-actions]
     python =
-        3.6: py36
         3.8: py38
         3.9: py39
         3.10: py310
@@ -63,7 +62,6 @@ legacy_tox_ini = """
 
     [testenv]
     deps =
-        django3.1: Django>=3.1
         django3.2: Django>=3.2
         django4.2: Django>=4.2
         django5.0: Django>=5.0

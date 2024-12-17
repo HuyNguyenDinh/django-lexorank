@@ -10,7 +10,7 @@ from django.forms.models import model_to_dict
 from ..fields import RankField
 from ..lexorank import LexoRank
 from ..managers import RankedModelManager
-from .scheduled_rebalancing import ScheduledRebalancing
+# from .scheduled_rebalancing import ScheduledRebalancing
 
 CharField.register_lookup(Length, "length")
 

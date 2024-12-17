@@ -13,7 +13,7 @@ class User(RankedModel):
     rank = RankField(insert_to_bottom=True)
 
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="users")
-    order_with_respect_to = "team"
+    order_with_respect_to = ["team"]
 
 
 class Board(RankedModel):
@@ -23,7 +23,7 @@ class Board(RankedModel):
 class Task(RankedModel):
     name = models.CharField(max_length=255)
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name="tasks")
-    order_with_respect_to = "board"
+    order_with_respect_to = ["board"]
 
     assigned_to = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="tasks"

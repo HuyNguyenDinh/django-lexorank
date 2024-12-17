@@ -1,6 +1,6 @@
 import factory
 
-from django_lexorank.models import ScheduledRebalancing
+# from django_lexorank.models import ScheduledRebalancing
 
 from .models import Board, Task, Team, User
 
@@ -36,6 +36,6 @@ class TaskFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: f"task_{n}")
 
 
-class ScheduledRebalancingFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = ScheduledRebalancing
+# class ScheduledRebalancingFactory(factory.django.DjangoModelFactory):
+#     class Meta:
+#         model = ScheduledRebalancing
