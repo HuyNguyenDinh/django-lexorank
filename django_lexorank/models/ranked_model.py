@@ -141,6 +141,20 @@ class RankedModel(models.Model):
         )
 
         return self._move_to(rank)
+    
+    def place_between(self, before_obj: Optional["RankedModel"], after_obj: Optional["RankedModel"]):
+        rank = LexoRank.get_lexorank_in_between(
+            previous_rank=before_obj.rank,
+            next_rank=after_obj.rank,
+            objects_count=self._objects_count,
+        )
+        if self.queryset_wrapper(rank__gt=before_obj.rank, rank__lt=after_obj.rank, **self._with_respect_to_kwargs).exists():
+            raise Exception("Not valid rank")
+        return self._move_to(rank)
+
+    @classmethod
+    def queryset_wrapper(cls, **kwargs):
+        return cls.objects.filter(**kwargs)
 
     def get_previous_object(self) -> Optional["RankedModel"]:
         """
