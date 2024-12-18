@@ -1,4 +1,3 @@
-from functools import cached_property
 from typing import Optional, Type, List, Dict
 
 from django.contrib import admin
@@ -59,7 +58,6 @@ class RankedModel(models.Model):
             self.schedule_rebalancing()
             # self.rebalance()
 
-    @cached_property
     def _model(self) -> Type[models.Model]:
         return self._meta.model
 
