@@ -58,6 +58,7 @@ class RankedModel(models.Model):
             self.schedule_rebalancing()
             # self.rebalance()
 
+    @property
     def _model(self) -> Type[models.Model]:
         return self._meta.model
 
@@ -108,14 +109,14 @@ class RankedModel(models.Model):
 
     def place_on_top(self) -> "RankedModel":
         """Place object at the top of the list."""
-        first_object = self.get_first_object()
+        first_object = self.get_first_object(self._with_respect_to_kwargs)
         _, rank, _ = self._wrapper_get_lexorank_in_between(before_obj=None, after_obj=first_object)
 
         return self._move_to(rank)
 
     def place_on_bottom(self) -> "RankedModel":
         """Place object at the bottom of the list."""
-        last_object = self.get_last_object()
+        last_object = self.get_last_object(self._with_respect_to_kwargs)
         _, rank, _ = self._wrapper_get_lexorank_in_between(before_obj=last_object, after_obj=None)
 
         return self._move_to(rank)
