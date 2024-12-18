@@ -20,11 +20,6 @@ class RankField(models.CharField):
             model = model_instance._meta.model
             with_respect_to_kwargs = {}
             if model.order_with_respect_to:
-                # with_respect_to_kwargs = {
-                #     model.order_with_respect_to: getattr(
-                #         model_instance, model.order_with_respect_to
-                #     )
-                # }
                 for field in model.order_with_respect_to:
                     with_respect_to_kwargs.update({
                         field: getattr(model_instance, field)

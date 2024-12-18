@@ -11,11 +11,6 @@ class RankedModelManager(models.Manager.from_queryset(RankedModelQuerySet)):  # 
     def _add(self, ordering: str, **kwargs):
         with_respect_to_kwargs = {}
         if self.model.order_with_respect_to:
-            # with_respect_to_kwargs = {
-            #     self.model.order_with_respect_to: kwargs[
-            #         self.model.order_with_respect_to
-            #     ]
-            # }
             for field in self.model.order_with_respect_to:
                 with_respect_to_kwargs.update({
                     field: kwargs[field]

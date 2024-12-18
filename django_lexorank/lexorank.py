@@ -3,6 +3,10 @@ import string
 from typing import List, Optional, Tuple
 
 
+class RebalancingRequiredException(ValueError):
+    pass
+
+
 class LexoRank:
     default_rank_length = 6
     rebalancing_length = 128
@@ -33,7 +37,7 @@ class LexoRank:
         max_len = max(len(previous_rank), len(next_rank))
 
         if max_len > cls.max_rank_length:
-            raise ValueError("Rebalancing Required")
+            raise RebalancingRequiredException("Rebalancing Required")
 
         previous_rank = previous_rank.ljust(max_len, cls.first_symbol)
         next_rank = next_rank.ljust(max_len, cls.last_symbol)
@@ -60,7 +64,7 @@ class LexoRank:
             previous_rank, next_rank = sorted([previous_rank, next_rank])
         else:
             if not previous_rank < next_rank:
-                raise ValueError("Previous rank must go before than next rank.")
+                raise RebalancingRequiredException("Previous rank must go before than next rank.")
 
         previous_rank_parts = cls.parse_rank(previous_rank)
         next_rank_parts = cls.parse_rank(next_rank)

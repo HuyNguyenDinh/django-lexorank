@@ -137,6 +137,9 @@ or for a group if `order_with_respect_to` is set
 `obj.rebalancing_scheduled()` - returns `True` if rebalancing is scheduled for the whole list,
 or for a group if `order_with_respect_to` is set
 
+#### Instance Signals
+`obj.post_rebalance()` - function run after rebalance, override it to make your own
+
 ### Model methods
 
 `model.get_first_object()` - return first object in the list
@@ -147,3 +150,5 @@ or for a group if `order_with_respect_to` is set
 
 `model.get_last_object_rank()` - return last object rank in the list
 
+#### Model Signals
+`model.post_rebalance_by_scheduled()` - function run after rebalance by the ScheduledRebalancing, override it to make your own
